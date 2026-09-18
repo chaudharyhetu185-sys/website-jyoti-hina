@@ -1,0 +1,80 @@
+export const MOCK_PROJECTS = [
+  {
+    _id: "proj-1",
+    title: "Aetheria Architecture Platform",
+    description: "Immersive 3D portfolio & web application for a premier luxury architecture studio featuring WebGL showcases.",
+    detailedDescription: "Designed and built end-to-end with dynamic portfolio galleries, spatial layout visualizations, fast-loading media assets, and a bespoke CMS dashboard.",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000",
+    technologies: ["React", "Three.js", "Tailwind CSS", "Node.js", "MongoDB"],
+    category: "Websites",
+    liveUrl: "https://example.com/aetheria",
+    githubUrl: "https://github.com/example/aetheria",
+    featured: true,
+    completionDate: "2024"
+  },
+  {
+    _id: "proj-2",
+    title: "Kroma Creative Dashboard",
+    description: "Next-gen analytics and asset management UI/UX designed for digital artists and content creators.",
+    detailedDescription: "Features real-time collaboration widgets, asset version history, intuitive drag-and-drop file organization, and high-contrast dark mode design.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000",
+    technologies: ["React", "Framer Motion", "Express API", "Tailwind CSS"],
+    category: "UI/UX",
+    liveUrl: "https://example.com/kroma",
+    githubUrl: "https://github.com/example/kroma",
+    featured: true,
+    completionDate: "2024"
+  },
+  {
+    _id: "proj-3",
+    title: "Verve Audio Lab",
+    description: "Interactive promotional web experience and web shop for a high-end audiophile headphone manufacturer.",
+    detailedDescription: "Interactive frequency visualizers, sound customizer UI, seamless checkout flow, and custom dynamic audio showcase components.",
+    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=1000",
+    technologies: ["Vite", "Web Audio API", "Node.js", "Tailwind CSS"],
+    category: "Creative",
+    liveUrl: "https://example.com/verve",
+    githubUrl: "https://github.com/example/verve",
+    featured: true,
+    completionDate: "2024"
+  },
+  {
+    _id: "proj-4",
+    title: "Nova Financial Engine",
+    description: "Sleek, high-converting fintech landing page and interactive investment calculator portal.",
+    detailedDescription: "Custom interactive charts, real-time ROI calculator, bank-grade encryption indicators, and frictionless user onboarding UI.",
+    image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=1000",
+    technologies: ["React", "Recharts", "Express.js", "MongoDB"],
+    category: "Custom Solutions",
+    liveUrl: "https://example.com/nova",
+    githubUrl: "https://github.com/example/nova",
+    featured: false,
+    completionDate: "2023"
+  },
+  {
+    _id: "proj-5",
+    title: "Lumina Organic Skincare",
+    description: "E-commerce flagship store with storytelling layout, customer reviews engine, and custom product customizer.",
+    detailedDescription: "Sensory-focused web design with silky smooth product view transitions, customer review filter engine, and cart state optimization.",
+    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=1000",
+    technologies: ["React", "Tailwind CSS", "Node.js", "REST API"],
+    category: "Websites",
+    liveUrl: "https://example.com/lumina",
+    githubUrl: "https://github.com/example/lumina",
+    featured: true,
+    completionDate: "2024"
+  },
+  {
+    _id: "proj-6",
+    title: "Pulse SaaS Portal",
+    description: "Comprehensive task management and team sync web application built for remote software engineering teams.",
+    detailedDescription: "Real-time updates, custom Kanban boards, task time tracking, and customizable notification preference matrices.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000",
+    technologies: ["React", "Redux Toolkit", "Express.js", "MongoDB"],
+    category: "Custom Solutions",
+    liveUrl: "https://example.com/pulse",
+    githubUrl: "https://github.com/example/pulse",
+    featured: false,
+    completionDate: "2024"
+  }
+];
