@@ -1,4 +1,8 @@
 require('dotenv').config();
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const app = require('./app');
 const { connectDB } = require('./config/db');
 const { verifySMTPTransporter } = require('./controllers/contactController');

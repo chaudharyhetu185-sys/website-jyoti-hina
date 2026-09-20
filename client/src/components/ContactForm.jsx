@@ -55,7 +55,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
           loading: false,
           success: true,
           error: null,
-          responseMsg: res.message || 'Message sent successfully!'
+          responseMsg: res.message || "Message sent successfully! We’ll get back to you soon."
         });
 
         try {
@@ -109,7 +109,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-semibold text-emerald-900">Message Sent Successfully!</p>
-            <p className="text-[11px] text-emerald-700 mt-0.5">{status.responseMsg}</p>
+            <p className="text-[11px] text-emerald-700 mt-0.5">{status.responseMsg || "Message sent successfully! We’ll get back to you soon."}</p>
           </div>
         </div>
       )}

@@ -1,4 +1,8 @@
 const nodemailer = require('nodemailer');
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const ContactMessage = require('../models/ContactMessage');
 const { getIsConnected } = require('../config/db');
 
@@ -9,12 +13,13 @@ const getEmailConfig = () => {
   const mailHost = process.env.MAIL_HOST || 'smtp.gmail.com';
   const mailPort = parseInt(process.env.MAIL_PORT || '587', 10);
   const mailUser = process.env.MAIL_USER;
-  const mailPass = process.env.MAIL_PASSWORD || process.env.MAIL_PASS;
+  const mailPass = (process.env.MAIL_PASSWORD || process.env.MAIL_PASS || '').trim();
   
-  const receiverEmail = process.env.RECEIVER_EMAIL || process.env.CONTACT_RECEIVER_EMAIL;
-  const receiverEmail2 = process.env.CONTACT_RECEIVER_EMAIL_2;
+  // Guarantee both recipient email addresses are included and deduplicated
+  const receiver1 = process.env.RECEIVER_EMAIL || process.env.CONTACT_RECEIVER_EMAIL || 'jyotijudal2006@gmail.com';
+  const receiver2 = process.env.CONTACT_RECEIVER_EMAIL_2 || 'chaudharyhetvi158@gmail.com';
 
-  const receivers = [receiverEmail, receiverEmail2].filter(Boolean).join(', ');
+  const receivers = Array.from(new Set([receiver1, receiver2].filter(Boolean)));
 
   return {
     mailHost,
@@ -22,21 +27,26 @@ const getEmailConfig = () => {
     mailUser,
     mailPass,
     receivers,
-    isConfigured: Boolean(mailUser && mailPass && mailPass !== 'your_gmail_app_password_here')
+    isConfigured: Boolean(mailUser && mailPass && mailPass !== 'your_gmail_app_password_here' && mailPass.length > 0)
   };
 };
 
 // ─── Nodemailer Transporter ──────────────────────────────────────────────────
 const createTransporter = () => {
   const { mailHost, mailPort, mailUser, mailPass } = getEmailConfig();
+  const cleanPass = mailPass.replace(/\s+/g, '');
+
   return nodemailer.createTransport({
     host: mailHost,
     port: mailPort,
-    secure: mailPort === 465, // true for port 465, false for 587 (STARTTLS)
+    secure: mailPort === 465, // true for 465, false for 587
     auth: {
       user: mailUser,
-      pass: mailPass,
+      pass: cleanPass,
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 };
 
@@ -46,7 +56,7 @@ const verifySMTPTransporter = async () => {
   console.log(`[SMTP] Checking configuration...`);
   console.log(`[SMTP] MAIL_USER CONFIGURED: ${Boolean(config.mailUser)}`);
   console.log(`[SMTP] MAIL_PASSWORD CONFIGURED: ${config.isConfigured}`);
-  console.log(`[SMTP] RECEIVER EMAIL: ${config.receivers || 'None'}`);
+  console.log(`[SMTP] RECIPIENT EMAILS: ${config.receivers.join(', ') || 'None'}`);
 
   if (!config.isConfigured) {
     console.warn('⚠️  [SMTP Warning] Email credentials not set or using placeholder in server/.env.');
@@ -151,16 +161,16 @@ const sendContactEmail = async (payload) => {
 
   console.log('--- CONTACT API EMAIL TASK ---');
   console.log(`EMAIL USER CONFIGURED: ${Boolean(config.mailUser)}`);
-  console.log(`RECEIVER CONFIGURED: ${Boolean(config.receivers)}`);
+  console.log(`RECIPIENTS: ${config.receivers.join(', ')}`);
 
   if (!config.isConfigured) {
     console.warn('[Email] Credentials missing or unconfigured in .env');
     throw new Error('Email credentials are not configured on the server.');
   }
 
-  if (!config.receivers) {
-    console.warn('[Email] Receiver email not set in .env');
-    throw new Error('Receiver email address is not configured on the server.');
+  if (!config.receivers || config.receivers.length === 0) {
+    console.warn('[Email] Receiver emails not set in .env');
+    throw new Error('Receiver email addresses are not configured on the server.');
   }
 
   const transporter = createTransporter();
@@ -170,8 +180,8 @@ const sendContactEmail = async (payload) => {
   console.log('SMTP VERIFY: SUCCESS');
 
   const info = await transporter.sendMail({
-    from: `"DuoVerse" <${config.mailUser}>`,
-    to: config.receivers,
+    from: `"DuoVerse Creative Studio" <${config.mailUser}>`,
+    to: config.receivers.join(', '), // Sends to BOTH configured recipient email addresses
     replyTo: payload.email,
     subject: `New Project Inquiry — DuoVerse (${payload.name})`,
     html: buildEmailHTML(payload),
@@ -216,10 +226,12 @@ exports.submitContact = async (req, res) => {
     };
 
     // 1. Save to DB or memory
+    let savedRecord = null;
     if (getIsConnected()) {
-      await ContactMessage.create(payload);
+      savedRecord = await ContactMessage.create(payload);
     } else {
-      inMemoryMessages.push({ id: `msg-${Date.now()}`, ...payload });
+      savedRecord = { id: `msg-${Date.now()}`, ...payload };
+      inMemoryMessages.push(savedRecord);
     }
 
     // 2. Send real email via SMTP
@@ -227,20 +239,23 @@ exports.submitContact = async (req, res) => {
       await sendContactEmail(payload);
       return res.status(200).json({
         success: true,
-        message: 'Message sent successfully!',
+        message: "Message sent successfully! We’ll get back to you soon.",
+        data: savedRecord
       });
     } catch (emailErr) {
       console.error('❌ [Email Send Failure]:', emailErr.message);
       return res.status(500).json({
         success: false,
-        message: 'Unable to send your message. Please try again.',
+        message: emailErr.message && emailErr.message.includes('not configured')
+          ? 'Email credentials are not configured on the server. Please check server/.env.'
+          : `Unable to send your message: ${emailErr.message || 'Email service error'}`
       });
     }
   } catch (error) {
     console.error('❌ [Contact API Exception]:', error);
     return res.status(500).json({
       success: false,
-      message: 'Unable to send your message. Please try again.',
+      message: error.message || 'Unable to send your message. Please try again.',
     });
   }
 };

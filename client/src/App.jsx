@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sidebar } from './components/Sidebar';
+import { TopNavbar } from './components/TopNavbar';
 import { HeroSection } from './sections/HeroSection';
 import { FoundersSection } from './sections/FoundersSection';
 import { ServicesSection } from './sections/ServicesSection';
@@ -11,7 +11,6 @@ export default function App() {
   const [activeSection, setActiveSection] = useState(1);
   const [direction, setDirection] = useState(1); // 1 = Next (left slide), -1 = Prev (right slide)
   const [targetFounder, setTargetFounder] = useState('');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Touch Swipe Gesture State
   const touchStartX = useRef(null);
@@ -39,7 +38,7 @@ export default function App() {
   // Keyboard Navigation Support (ArrowRight = Next, ArrowLeft = Prev)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
       if (e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault();
@@ -56,12 +55,12 @@ export default function App() {
 
   // Touch Swipe Event Handlers
   const handleTouchStart = (e) => {
-    if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
     touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = (e) => {
-    if (!touchStartX.current || ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+    if (!touchStartX.current || ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
     const touchEndX = e.changedTouches[0].clientX;
     const diffX = touchStartX.current - touchEndX;
 
@@ -121,19 +120,14 @@ export default function App() {
       onTouchEnd={handleTouchEnd}
       className="relative w-screen h-screen overflow-hidden bg-[#f8fafc] text-slate-900 select-none"
     >
-      {/* Fixed Left Vertical Sidebar Navigation */}
-      <Sidebar
+      {/* Top Horizontal Navigation Bar */}
+      <TopNavbar
         activeSection={activeSection}
         onNavigate={handleNavigate}
-        isCollapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed((c) => !c)}
       />
 
-      {/* Main Full-Screen Slide Container — margin adjusts with sidebar */}
-      <main
-        className="h-screen pt-14 md:pt-0 relative overflow-hidden transition-all duration-300 ease-in-out"
-        style={{ marginLeft: window.innerWidth >= 768 ? (sidebarCollapsed ? '4rem' : '16rem') : 0 }}
-      >
+      {/* Main Full-Screen Slide Container */}
+      <main className="h-screen w-full pt-16 relative overflow-hidden">
         {/* Lower Right Corner Next Section Button */}
         <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-30 flex items-center gap-2">
           {activeSection > 1 && (

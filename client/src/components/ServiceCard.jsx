@@ -60,13 +60,14 @@ export const ServiceCard = ({ service, onSelectService }) => {
         <div className="flex items-center justify-between">
           <motion.div
             animate={{
-              background: hovered
-                ? 'linear-gradient(135deg,#6366f1,#8b5cf6)'
-                : 'transparent',
               scale: hovered ? 1.08 : 1,
             }}
             transition={{ duration: 0.25 }}
-            className="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center shadow-sm"
+            className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 border ${
+              hovered
+                ? 'bg-indigo-600 border-indigo-600 shadow-indigo-500/20'
+                : 'bg-indigo-50 border-indigo-100/80'
+            }`}
           >
             <IconComponent
               className={`w-6 h-6 transition-colors duration-200 ${hovered ? 'text-white' : 'text-indigo-600'}`}
@@ -77,13 +78,14 @@ export const ServiceCard = ({ service, onSelectService }) => {
             animate={{
               x: hovered ? 2 : 0,
               y: hovered ? -2 : 0,
-              backgroundColor: hovered ? '#eef2ff' : '#f8fafc',
             }}
             transition={{ duration: 0.2 }}
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-200 ${
+              hovered ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-50 text-slate-400'
+            }`}
           >
             <ArrowUpRight
-              className={`w-4 h-4 transition-colors duration-200 ${hovered ? 'text-indigo-600' : 'text-slate-400'}`}
+              className="w-4 h-4"
             />
           </motion.div>
         </div>

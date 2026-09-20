@@ -12,6 +12,16 @@ const contactMessageSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
+  phone: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  service: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   subject: {
     type: String,
     default: 'General Inquiry',
