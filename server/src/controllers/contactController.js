@@ -31,12 +31,33 @@ const getEmailConfig = () => {
   };
 };
 
-// ─── Nodemailer Transporter ──────────────────────────────────────────────────
-const createTransporter = () => {
+// ─── Nodemailer Transporter (Singleton with Connection Pooling) ─────────────
+let cachedTransporter = null;
+
+const getTransporter = () => {
+  if (cachedTransporter) return cachedTransporter;
+
   const { mailHost, mailPort, mailUser, mailPass } = getEmailConfig();
   const cleanPass = mailPass.replace(/\s+/g, '');
 
-  return nodemailer.createTransport({
+  if (mailHost && mailHost.toLowerCase().includes('gmail')) {
+    cachedTransporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: mailUser,
+        pass: cleanPass,
+      },
+      pool: true,
+      maxConnections: 3,
+      maxMessages: 100,
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+    return cachedTransporter;
+  }
+
+  cachedTransporter = nodemailer.createTransport({
     host: mailHost,
     port: mailPort,
     secure: mailPort === 465, // true for 465, false for 587
@@ -44,10 +65,14 @@ const createTransporter = () => {
       user: mailUser,
       pass: cleanPass,
     },
+    pool: true,
+    maxConnections: 3,
     tls: {
       rejectUnauthorized: false
     }
   });
+
+  return cachedTransporter;
 };
 
 // ─── Transporter Startup Verification ────────────────────────────────────────
@@ -65,7 +90,7 @@ const verifySMTPTransporter = async () => {
   }
 
   try {
-    const transporter = createTransporter();
+    const transporter = getTransporter();
     await transporter.verify();
     console.log('✅ [SMTP VERIFY: SUCCESS] Transporter connection verified and ready to send emails.');
     return true;
@@ -173,11 +198,7 @@ const sendContactEmail = async (payload) => {
     throw new Error('Receiver email addresses are not configured on the server.');
   }
 
-  const transporter = createTransporter();
-  
-  // Verify SMTP before sending
-  await transporter.verify();
-  console.log('SMTP VERIFY: SUCCESS');
+  const transporter = getTransporter();
 
   const info = await transporter.sendMail({
     from: `"DuoVerse Creative Studio" <${config.mailUser}>`,

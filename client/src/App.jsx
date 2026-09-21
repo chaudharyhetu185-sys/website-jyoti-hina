@@ -127,7 +127,7 @@ export default function App() {
       />
 
       {/* Main Full-Screen Slide Container */}
-      <main className="h-screen w-full pt-16 relative overflow-hidden">
+      <main className="h-screen w-full relative overflow-hidden">
         {/* Lower Right Corner Next Section Button */}
         <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-30 flex items-center gap-2">
           {activeSection > 1 && (
@@ -170,7 +170,7 @@ export default function App() {
               x: { type: 'spring', stiffness: 280, damping: 30 },
               opacity: { duration: 0.25 },
             }}
-            className="w-full h-full absolute inset-0"
+            className="w-full h-[calc(100vh-4rem)] absolute inset-x-0 bottom-0 top-16 overflow-hidden"
           >
             {renderSlideContent()}
           </motion.div>

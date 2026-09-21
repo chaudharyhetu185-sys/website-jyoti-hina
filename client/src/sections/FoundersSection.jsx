@@ -35,7 +35,7 @@ export const FoundersSection = () => {
   }, []);
 
   return (
-    <section className="h-full w-full px-4 py-5 sm:px-6 sm:py-6 md:px-8 flex flex-col items-center justify-center overflow-hidden bg-slate-50 relative select-none">
+    <section className="h-full w-full px-4 py-3 sm:px-6 md:px-8 flex flex-col items-center justify-center overflow-hidden bg-slate-50 relative select-none">
       {/* Background ambient vectors (unique to founders section) */}
       <FoundersVectors />
 
@@ -49,7 +49,7 @@ export const FoundersSection = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-4xl mx-auto w-full z-10 flex flex-col gap-5 my-auto"
+        className="max-w-4xl mx-auto w-full z-10 flex flex-col gap-3.5 sm:gap-4.5 my-auto"
       >
         {/* Section Header */}
         <div className="text-center space-y-2">

@@ -41,7 +41,7 @@ export const ServiceCard = ({ service, onSelectService }) => {
       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
       style={{ transformStyle: 'preserve-3d', perspective: 800 }}
       className={`
-        group cursor-pointer relative rounded-2xl bg-white/90 backdrop-blur-xl p-5 sm:p-6
+        group cursor-pointer relative rounded-2xl bg-white/90 backdrop-blur-xl p-4 sm:p-5
         border shadow-md transition-all duration-300 flex flex-col justify-between
         ${hovered
           ? 'border-indigo-300 shadow-xl shadow-indigo-500/15'
@@ -55,7 +55,7 @@ export const ServiceCard = ({ service, onSelectService }) => {
         transition={{ duration: 0.3 }}
       />
 
-      <div className="space-y-3.5 relative">
+      <div className="space-y-2.5 relative">
         {/* Top Icon + Arrow */}
         <div className="flex items-center justify-between">
           <motion.div

@@ -27,7 +27,7 @@ const cardReveal = {
 
 export const ServicesSection = ({ onNavigate }) => {
   return (
-    <section className="h-full w-full px-4 py-5 sm:px-6 sm:py-6 md:px-8 flex flex-col items-center justify-center overflow-hidden bg-slate-50 relative select-none">
+    <section className="h-full w-full px-4 pt-8 pb-4 sm:px-6 md:px-8 flex flex-col items-center justify-center overflow-hidden bg-slate-50 relative select-none">
       {/* Decorative ambient vectors (unique perspective grid style) */}
       <ServicesVectors />
 
@@ -41,10 +41,10 @@ export const ServicesSection = ({ onNavigate }) => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-3xl mx-auto w-full z-10 flex flex-col gap-5 my-auto"
+        className="max-w-3xl mx-auto w-full z-10 flex flex-col gap-2.5 sm:gap-3.5 my-auto"
       >
         {/* Section Header */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-1.5">
           <motion.div
             variants={itemVariants}
             className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold tracking-widest uppercase border border-indigo-200"
@@ -71,7 +71,7 @@ export const ServicesSection = ({ onNavigate }) => {
         {/* Services Grid — staggered grid reveal */}
         <motion.div
           variants={gridVariants}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
         >
           {SERVICES_DATA.map((srv, idx) => (
             <motion.div key={srv.id} variants={cardReveal}>
