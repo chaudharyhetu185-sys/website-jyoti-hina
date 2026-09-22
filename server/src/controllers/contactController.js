@@ -31,33 +31,30 @@ const getEmailConfig = () => {
   };
 };
 
-// ─── Nodemailer Transporter (Singleton with Connection Pooling) ─────────────
-let cachedTransporter = null;
-
-const getTransporter = () => {
-  if (cachedTransporter) return cachedTransporter;
-
+// ─── Nodemailer Transporter ──────────────────────────────────────────────────
+const createTransporter = () => {
   const { mailHost, mailPort, mailUser, mailPass } = getEmailConfig();
   const cleanPass = mailPass.replace(/\s+/g, '');
 
   if (mailHost && mailHost.toLowerCase().includes('gmail')) {
-    cachedTransporter = nodemailer.createTransport({
-      service: 'gmail',
+    return nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: mailUser,
         pass: cleanPass,
       },
-      pool: true,
-      maxConnections: 3,
-      maxMessages: 100,
       tls: {
         rejectUnauthorized: false
-      }
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 20000
     });
-    return cachedTransporter;
   }
 
-  cachedTransporter = nodemailer.createTransport({
+  return nodemailer.createTransport({
     host: mailHost,
     port: mailPort,
     secure: mailPort === 465, // true for 465, false for 587
@@ -65,14 +62,13 @@ const getTransporter = () => {
       user: mailUser,
       pass: cleanPass,
     },
-    pool: true,
-    maxConnections: 3,
     tls: {
       rejectUnauthorized: false
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 20000
   });
-
-  return cachedTransporter;
 };
 
 // ─── Transporter Startup Verification ────────────────────────────────────────
@@ -90,7 +86,7 @@ const verifySMTPTransporter = async () => {
   }
 
   try {
-    const transporter = getTransporter();
+    const transporter = createTransporter();
     await transporter.verify();
     console.log('✅ [SMTP VERIFY: SUCCESS] Transporter connection verified and ready to send emails.');
     return true;
@@ -180,8 +176,8 @@ const buildEmailHTML = (payload) => {
 </html>`;
 };
 
-// ─── Send Email Helper ────────────────────────────────────────────────────────
-const sendContactEmail = async (payload) => {
+// ─── Send Email Helper with Retry ─────────────────────────────────────────────
+const sendContactEmail = async (payload, maxRetries = 2) => {
   const config = getEmailConfig();
 
   console.log('--- CONTACT API EMAIL TASK ---');
@@ -198,21 +194,34 @@ const sendContactEmail = async (payload) => {
     throw new Error('Receiver email addresses are not configured on the server.');
   }
 
-  const transporter = getTransporter();
+  let lastError = null;
 
-  const info = await transporter.sendMail({
-    from: `"DuoVerse Creative Studio" <${config.mailUser}>`,
-    to: config.receivers.join(', '), // Sends to BOTH configured recipient email addresses
-    replyTo: payload.email,
-    subject: `New Project Inquiry — DuoVerse (${payload.name})`,
-    html: buildEmailHTML(payload),
-    text: `New Contact Form Submission\n\nName: ${payload.name}\nEmail: ${payload.email}\nPhone: ${payload.phone || 'N/A'}\nService: ${payload.service || 'N/A'}\nSubject: ${payload.subject}\nMessage: ${payload.message}\nDate: ${new Date(payload.createdAt).toLocaleString()}`
-  });
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const transporter = createTransporter();
+      const info = await transporter.sendMail({
+        from: `"DuoVerse Creative Studio" <${config.mailUser}>`,
+        to: config.receivers.join(', '), // Sends to BOTH configured recipient email addresses
+        replyTo: payload.email,
+        subject: `New Project Inquiry — DuoVerse (${payload.name})`,
+        html: buildEmailHTML(payload),
+        text: `New Contact Form Submission\n\nName: ${payload.name}\nEmail: ${payload.email}\nPhone: ${payload.phone || 'N/A'}\nService: ${payload.service || 'N/A'}\nSubject: ${payload.subject}\nMessage: ${payload.message}\nDate: ${new Date(payload.createdAt).toLocaleString()}`
+      });
 
-  console.log('EMAIL SEND: SUCCESS');
-  console.log(`MESSAGE ID: ${info.messageId}`);
+      console.log(`EMAIL SEND: SUCCESS (Attempt ${attempt})`);
+      console.log(`MESSAGE ID: ${info.messageId}`);
+      return info;
+    } catch (err) {
+      lastError = err;
+      console.warn(`⚠️ [Email Send Warning] Attempt ${attempt} failed: ${err.message}`);
+      if (attempt < maxRetries) {
+        // Wait 500ms before retrying on network glitch
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+    }
+  }
 
-  return info;
+  throw lastError || new Error('Failed to deliver email after retry.');
 };
 
 // ─── Controllers ──────────────────────────────────────────────────────────────
@@ -246,7 +255,7 @@ exports.submitContact = async (req, res) => {
       createdAt: new Date(),
     };
 
-    // 1. Save to DB or memory
+    // 1. Save to DB or memory (guaranteed storage)
     let savedRecord = null;
     if (getIsConnected()) {
       savedRecord = await ContactMessage.create(payload);
@@ -264,12 +273,12 @@ exports.submitContact = async (req, res) => {
         data: savedRecord
       });
     } catch (emailErr) {
-      console.error('❌ [Email Send Failure]:', emailErr.message);
+      console.error('❌ [Email Send Error]:', emailErr.message);
       return res.status(500).json({
         success: false,
         message: emailErr.message && emailErr.message.includes('not configured')
-          ? 'Email credentials are not configured on the server. Please check server/.env.'
-          : `Unable to send your message: ${emailErr.message || 'Email service error'}`
+          ? 'Email service is not configured on the server. Please verify environment variables in Vercel.'
+          : `Failed to send email: ${emailErr.message || 'SMTP service error'}. Please try again later.`
       });
     }
   } catch (error) {

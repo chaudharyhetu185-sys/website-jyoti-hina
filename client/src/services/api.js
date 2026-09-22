@@ -10,7 +10,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 8000
+  timeout: 15000
 });
 
 export const fetchFounders = async () => {
@@ -61,10 +61,16 @@ export const fetchReviews = async () => {
 
 export const submitContactForm = async (formData) => {
   try {
-    const response = await apiClient.post('/contact', formData);
+    const response = await apiClient.post('/contact', formData, {
+      timeout: 30000 // Allow up to 30 seconds for SMTP email delivery
+    });
     return response.data;
   } catch (error) {
     console.error('[API Client] Contact form submit error:', error.message);
+    // Timeout error handling
+    if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      throw new Error('Sending took longer than expected due to network latency. Please check your connection and try again.');
+    }
     // Extract server-side message if available (validation errors, email errors, etc.)
     if (error.response && error.response.data) {
       throw new Error(error.response.data.message || 'Something went wrong while sending your message. Please try again.');

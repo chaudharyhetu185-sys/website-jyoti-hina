@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 // Health check route
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   const { getIsConnected } = require('./config/db');
   res.status(200).json({
     status: 'healthy',
@@ -34,11 +34,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Mount REST API Routes
+// Mount REST API Routes (supports both /api/* and /* for Vercel Serverless Function rewrites)
 app.use('/api/founders', founderRoutes);
+app.use('/founders', founderRoutes);
+
 app.use('/api/projects', projectRoutes);
+app.use('/projects', projectRoutes);
+
 app.use('/api/reviews', reviewRoutes);
+app.use('/reviews', reviewRoutes);
+
 app.use('/api/contact', contactRoutes);
+app.use('/contact', contactRoutes);
 
 // 404 Route Handler
 app.use('*', (req, res) => {
