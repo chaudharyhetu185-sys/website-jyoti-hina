@@ -18,9 +18,21 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+const { connectDB } = require('./config/db');
+
 // Request Logging Middleware (Development)
 app.use((req, res, next) => {
   console.log(`[API Request] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// Serverless DB connection middleware (ensures warm/cold DB connection before routes)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+  } catch (err) {
+    // Graceful continuation; individual controllers handle offline fallback
+  }
   next();
 });
 

@@ -1,4 +1,11 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
 require('dotenv').config();
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const mongoose = require('mongoose');
 const Founder = require('../models/Founder');
 const Project = require('../models/Project');
