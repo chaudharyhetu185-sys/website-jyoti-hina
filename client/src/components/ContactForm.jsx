@@ -95,9 +95,9 @@ export const ContactForm = ({ initialFounderName = '' }) => {
   };
 
   return (
-    <div className="rounded-2xl glass-panel p-5 sm:p-6 border border-slate-200 bg-white shadow-sm">
-      <div className="mb-4">
-        <h3 className="text-lg font-bold font-display text-slate-900 flex items-center gap-2">
+    <div className="rounded-2xl glass-panel p-4 sm:p-5 md:p-6 border border-slate-200 bg-white shadow-sm">
+      <div className="mb-3 sm:mb-4">
+        <h3 className="text-base sm:text-lg font-bold font-display text-slate-900 flex items-center gap-2">
           <span>Start a Conversation</span>
           <Sparkles className="w-4 h-4 text-indigo-600" />
         </h3>

@@ -35,7 +35,7 @@ export const FoundersSection = () => {
   }, []);
 
   return (
-    <section className="h-full w-full px-4 py-3 sm:px-6 md:px-8 flex flex-col items-center justify-center overflow-hidden bg-slate-50 relative select-none">
+    <section className="min-h-full w-full px-4 py-6 sm:px-6 md:px-8 pb-24 md:pb-8 flex flex-col items-center justify-center overflow-x-hidden bg-slate-50 relative select-none">
       {/* Background ambient vectors (unique to founders section) */}
       <FoundersVectors />
 
@@ -52,7 +52,7 @@ export const FoundersSection = () => {
         className="max-w-4xl mx-auto w-full z-10 flex flex-col gap-3.5 sm:gap-4.5 my-auto"
       >
         {/* Section Header */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-1.5 sm:space-y-2">
           <motion.div
             variants={badgeVariants}
             className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold tracking-widest uppercase border border-indigo-200"
@@ -63,7 +63,7 @@ export const FoundersSection = () => {
 
           <motion.h2
             variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
+            className="text-2.5xl sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
           >
             Built by Two.{' '}
             <span className="text-indigo-600">Made to Stand Out.</span>
@@ -71,7 +71,7 @@ export const FoundersSection = () => {
 
           <motion.p
             variants={itemVariants}
-            className="text-sm sm:text-base text-slate-600 font-medium max-w-lg mx-auto"
+            className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-lg mx-auto"
           >
             Creative designs and modern websites, crafted with purpose.
           </motion.p>
@@ -79,14 +79,14 @@ export const FoundersSection = () => {
 
         {/* Founders Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto w-full animate-pulse">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 max-w-3xl mx-auto w-full animate-pulse">
             <div className="h-80 rounded-2xl bg-white border border-slate-200" />
             <div className="h-80 rounded-2xl bg-white border border-slate-200" />
           </div>
         ) : (
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto w-full items-start"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 max-w-3xl mx-auto w-full items-start"
           >
             {founders.map((founder, idx) => (
               <motion.div

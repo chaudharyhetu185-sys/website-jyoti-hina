@@ -14,6 +14,7 @@ export default function App() {
 
   // Touch Swipe Gesture State
   const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
 
   const handleNavigate = (targetPage) => {
     if (targetPage < 1 || targetPage > 4 || targetPage === activeSection) return;
@@ -53,18 +54,22 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeSection]);
 
-  // Touch Swipe Event Handlers
+  // Touch Swipe Event Handlers (allows natural vertical scrolling on mobile)
   const handleTouchStart = (e) => {
-    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+    if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A'].includes(e.target.tagName)) return;
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e) => {
-    if (!touchStartX.current || ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+    if (touchStartX.current === null || ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
     const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
     const diffX = touchStartX.current - touchEndX;
+    const diffY = (touchStartY.current !== null) ? touchStartY.current - touchEndY : 0;
 
-    if (Math.abs(diffX) > 50) {
+    // Only switch slides if horizontal swipe is clearly dominant over vertical scroll
+    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
       if (diffX > 0) {
         handleNext(); // Swipe Left -> Next Page
       } else {
@@ -72,6 +77,7 @@ export default function App() {
       }
     }
     touchStartX.current = null;
+    touchStartY.current = null;
   };
 
   // Slide Animation Variants
@@ -129,20 +135,22 @@ export default function App() {
       {/* Main Full-Screen Slide Container */}
       <main className="h-screen w-full relative overflow-hidden">
         {/* Lower Right Corner Next Section Button */}
-        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-30 flex items-center gap-2">
+        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-30 flex items-center gap-2">
           {activeSection > 1 && (
             <button
               onClick={handlePrev}
-              className="p-2.5 rounded-2xl bg-white/95 hover:bg-slate-100 text-slate-700 border border-slate-200/90 shadow-md hover:shadow-lg backdrop-blur-md transition-all duration-200 group active:scale-95"
+              className="p-2 sm:p-2.5 rounded-2xl bg-white/95 hover:bg-slate-100 text-slate-700 border border-slate-200/90 shadow-md hover:shadow-lg backdrop-blur-md transition-all duration-200 group active:scale-95"
               title="Previous Section"
+              aria-label="Previous Section"
             >
-              <ChevronRight className="w-4 h-4 text-slate-600 rotate-180 group-hover:-translate-x-0.5 transition-transform" />
+              <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600 rotate-180 group-hover:-translate-x-0.5 transition-transform" />
             </button>
           )}
           <button
             onClick={() => handleNavigate(activeSection < 4 ? activeSection + 1 : 1)}
-            className="flex items-center justify-between gap-3 px-5 py-2.5 rounded-2xl bg-white/95 hover:bg-indigo-600 text-slate-700 hover:text-white border border-slate-200/90 shadow-lg hover:shadow-xl backdrop-blur-md text-xs font-semibold transition-all duration-300 group active:scale-95"
+            className="flex items-center justify-between gap-2 sm:gap-3 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-2xl bg-white/95 hover:bg-indigo-600 text-slate-700 hover:text-white border border-slate-200/90 shadow-lg hover:shadow-xl backdrop-blur-md text-[11px] sm:text-xs font-semibold transition-all duration-300 group active:scale-95"
             title={activeSection < 4 ? `Go to Section 0${activeSection + 1}` : 'Back to Intro'}
+            aria-label={activeSection < 4 ? `Go to Section 0${activeSection + 1}` : 'Back to Intro'}
           >
             <span>
               {activeSection === 1 && 'Founders'}
@@ -151,9 +159,9 @@ export default function App() {
               {activeSection === 4 && 'Top'}
             </span>
             {activeSection < 4 ? (
-              <ArrowRight className="w-4 h-4 text-indigo-600 group-hover:text-white group-hover:translate-x-1 transition-all ml-1" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 group-hover:text-white group-hover:translate-x-1 transition-all ml-1" />
             ) : (
-              <RotateCcw className="w-4 h-4 text-indigo-600 group-hover:text-white transition-colors ml-1" />
+              <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 group-hover:text-white transition-colors ml-1" />
             )}
           </button>
         </div>
@@ -170,7 +178,7 @@ export default function App() {
               x: { type: 'spring', stiffness: 280, damping: 30 },
               opacity: { duration: 0.25 },
             }}
-            className="w-full h-[calc(100vh-4rem)] absolute inset-x-0 bottom-0 top-16 overflow-hidden"
+            className="w-full h-[calc(100vh-4rem)] absolute inset-x-0 bottom-0 top-16 overflow-y-auto overflow-x-hidden"
           >
             {renderSlideContent()}
           </motion.div>

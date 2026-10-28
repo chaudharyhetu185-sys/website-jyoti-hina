@@ -27,7 +27,7 @@ const cardReveal = {
 
 export const ServicesSection = ({ onNavigate }) => {
   return (
-    <section className="h-full w-full px-4 pt-8 pb-4 sm:px-6 md:px-8 flex flex-col items-center justify-center overflow-hidden bg-slate-50 relative select-none">
+    <section className="min-h-full w-full px-4 py-6 sm:px-6 md:px-8 pb-24 md:pb-8 flex flex-col items-center justify-center overflow-x-hidden bg-slate-50 relative select-none">
       {/* Decorative ambient vectors (unique perspective grid style) */}
       <ServicesVectors />
 
@@ -55,14 +55,14 @@ export const ServicesSection = ({ onNavigate }) => {
 
           <motion.h2
             variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
+            className="text-2.5xl sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
           >
             Our <span className="text-indigo-600">Services</span>
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
-            className="text-sm sm:text-base text-slate-600 font-medium max-w-lg mx-auto"
+            className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-lg mx-auto"
           >
             End-to-end digital solutions designed to elevate your brand and grow your business online.
           </motion.p>

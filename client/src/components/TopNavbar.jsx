@@ -112,53 +112,64 @@ export const TopNavbar = ({ activeSection, onNavigate }) => {
       {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-xl"
-          >
-            <div className="p-4 space-y-3">
-              <div className="grid grid-cols-2 gap-2">
-                {NAV_ITEMS.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeSection === item.id;
-                  return (
-                    <motion.button
-                      key={item.id}
-                      whileTap={{ scale: 0.96 }}
-                      onClick={() => {
-                        onNavigate(item.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`flex items-center gap-2.5 p-3 rounded-xl text-xs font-medium text-left transition-all ${
-                        isActive
-                          ? 'bg-indigo-600 text-white font-semibold shadow-md shadow-indigo-600/20'
-                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4 shrink-0" />
-                      <span>{item.label}</span>
-                    </motion.button>
-                  );
-                })}
-              </div>
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 top-16 bg-slate-900/20 backdrop-blur-xs z-40 md:hidden"
+              aria-hidden="true"
+            />
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-50 md:hidden overflow-hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-xl"
+            >
+              <div className="p-4 space-y-3 max-h-[calc(100vh-5rem)] overflow-y-auto">
+                <div className="grid grid-cols-2 gap-2">
+                  {NAV_ITEMS.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeSection === item.id;
+                    return (
+                      <motion.button
+                        key={item.id}
+                        whileTap={{ scale: 0.96 }}
+                        onClick={() => {
+                          onNavigate(item.id);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`flex items-center gap-2.5 p-3 rounded-xl text-xs font-medium text-left transition-all ${
+                          isActive
+                            ? 'bg-indigo-600 text-white font-semibold shadow-md shadow-indigo-600/20'
+                            : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 shrink-0" />
+                        <span>{item.label}</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
 
-              <div className="pt-2 border-t border-slate-100">
-                <button
-                  onClick={() => {
-                    onNavigate(4);
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-indigo-600 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors"
-                >
-                  <span>Start a Project</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                <div className="pt-2 border-t border-slate-100">
+                  <button
+                    onClick={() => {
+                      onNavigate(4);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-indigo-600 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors"
+                  >
+                    <span>Start a Project</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </header>

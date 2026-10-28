@@ -41,7 +41,7 @@ export const ServiceCard = ({ service, onSelectService }) => {
       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
       style={{ transformStyle: 'preserve-3d', perspective: 800 }}
       className={`
-        group cursor-pointer relative rounded-2xl bg-white/90 backdrop-blur-xl p-4 sm:p-5
+        group cursor-pointer relative rounded-2xl bg-white/90 backdrop-blur-xl p-3.5 sm:p-4 md:p-5
         border shadow-md transition-all duration-300 flex flex-col justify-between
         ${hovered
           ? 'border-indigo-300 shadow-xl shadow-indigo-500/15'
@@ -55,7 +55,7 @@ export const ServiceCard = ({ service, onSelectService }) => {
         transition={{ duration: 0.3 }}
       />
 
-      <div className="space-y-2.5 relative">
+      <div className="space-y-2 sm:space-y-2.5 relative">
         {/* Top Icon + Arrow */}
         <div className="flex items-center justify-between">
           <motion.div
@@ -63,14 +63,14 @@ export const ServiceCard = ({ service, onSelectService }) => {
               scale: hovered ? 1.08 : 1,
             }}
             transition={{ duration: 0.25 }}
-            className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 border ${
+            className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm transition-all duration-200 border ${
               hovered
                 ? 'bg-indigo-600 border-indigo-600 shadow-indigo-500/20'
                 : 'bg-indigo-50 border-indigo-100/80'
             }`}
           >
             <IconComponent
-              className={`w-6 h-6 transition-colors duration-200 ${hovered ? 'text-white' : 'text-indigo-600'}`}
+              className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-200 ${hovered ? 'text-white' : 'text-indigo-600'}`}
             />
           </motion.div>
 
@@ -80,22 +80,22 @@ export const ServiceCard = ({ service, onSelectService }) => {
               y: hovered ? -2 : 0,
             }}
             transition={{ duration: 0.2 }}
-            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-200 ${
+            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center transition-colors duration-200 ${
               hovered ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-50 text-slate-400'
             }`}
           >
             <ArrowUpRight
-              className="w-4 h-4"
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4"
             />
           </motion.div>
         </div>
 
         {/* Title & Description */}
-        <div className="space-y-1.5 pt-1">
+        <div className="space-y-1 sm:space-y-1.5 pt-1">
           <motion.h3
             animate={{ x: hovered ? 2 : 0 }}
             transition={{ duration: 0.2 }}
-            className={`text-lg sm:text-xl font-bold font-display transition-colors duration-200 ${hovered ? 'text-indigo-600' : 'text-slate-900'}`}
+            className={`text-base sm:text-lg md:text-xl font-bold font-display transition-colors duration-200 ${hovered ? 'text-indigo-600' : 'text-slate-900'}`}
           >
             {title}
           </motion.h3>
