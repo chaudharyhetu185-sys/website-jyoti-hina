@@ -139,7 +139,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
               onChange={handleChange}
               placeholder="e.g. Sarah Jenkins"
               disabled={status.loading}
-              className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm sm:text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
             />
           </div>
 
@@ -154,7 +154,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
               onChange={handleChange}
               placeholder="e.g. sarah@company.com"
               disabled={status.loading}
-              className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm sm:text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
             />
           </div>
         </div>
@@ -171,7 +171,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
               onChange={handleChange}
               placeholder="e.g. +1 (555) 019-2834"
               disabled={status.loading}
-              className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm sm:text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
             />
           </div>
 
@@ -184,7 +184,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
               value={formData.service}
               onChange={handleChange}
               disabled={status.loading}
-              className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-sm sm:text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
             >
               <option value="Web Development & Design">Web Development & Design</option>
               <option value="Custom Web Applications">Custom Web Applications</option>
@@ -206,7 +206,7 @@ export const ContactForm = ({ initialFounderName = '' }) => {
             onChange={handleChange}
             placeholder="Tell us about your project goals or custom website requirements..."
             disabled={status.loading}
-            className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors resize-none"
+            className="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm sm:text-xs focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors resize-none"
           />
         </div>
 

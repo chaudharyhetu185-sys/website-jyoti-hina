@@ -43,7 +43,7 @@ export const HeroSection = ({ onNavigate }) => {
   return (
     <section
       ref={containerRef}
-      className="min-h-full w-full px-4 py-8 sm:px-8 sm:py-10 md:px-10 md:py-10 pb-24 sm:pb-20 md:pb-10 flex flex-col items-center justify-center text-center overflow-x-hidden bg-[#f8fafc] relative select-none"
+      className="min-h-full w-full px-4 py-6 sm:px-8 sm:py-10 md:px-10 md:py-10 pb-20 sm:pb-20 md:pb-10 flex flex-col items-center justify-center text-center overflow-x-hidden bg-[#f8fafc] relative select-none"
     >
       {/* ── Layer 0: Ambient Vectors (deepest, most movement) ── */}
       <motion.div
@@ -91,7 +91,7 @@ export const HeroSection = ({ onNavigate }) => {
           <div className="space-y-2 overflow-hidden">
             <motion.h1
               variants={itemVariants}
-              className="text-3.5xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-slate-900 leading-[1.15] sm:leading-[1.1]"
+              className="text-[1.9rem] leading-[1.2] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-slate-900 sm:leading-[1.1]"
             >
               We Create. We Design.<br />
               <span className="text-indigo-600">We Build.</span>

@@ -43,7 +43,7 @@ export const FounderCard = ({ founder }) => {
       }`}
     >
       {/* ── PHOTO with zoom on hover ── */}
-      <div className="w-full h-52 sm:h-60 md:h-64 overflow-hidden bg-slate-100 shrink-0 relative">
+      <div className="w-full h-48 sm:h-60 md:h-64 overflow-hidden bg-slate-100 shrink-0 relative">
         <motion.img
           src={avatar}
           alt={name}

@@ -63,7 +63,7 @@ export const FoundersSection = () => {
 
           <motion.h2
             variants={itemVariants}
-            className="text-2.5xl sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
+            className="text-[1.6rem] leading-[1.25] sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
           >
             Built by Two.{' '}
             <span className="text-indigo-600">Made to Stand Out.</span>

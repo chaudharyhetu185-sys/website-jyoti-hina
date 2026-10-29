@@ -44,7 +44,7 @@ export const ContactSection = ({ targetFounder = '' }) => {
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center space-y-1">
-          <h2 className="text-2.5xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">
+          <h2 className="text-[1.6rem] leading-[1.25] sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 tracking-tight">
             Contact <span className="text-indigo-600">Us</span>
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-slate-500 font-medium">
@@ -64,7 +64,7 @@ export const ContactSection = ({ targetFounder = '' }) => {
               href={`mailto:${email}`}
               whileHover={{ y: -3, borderColor: '#a5b4fc', boxShadow: '0 8px 24px -6px rgba(99,102,241,0.18)' }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2.5 sm:gap-3 px-3 py-2.5 sm:px-3.5 sm:py-3 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/50 transition-all group shadow-sm min-w-0"
+              className="flex items-center gap-2.5 sm:gap-3 px-3 py-2.5 sm:px-3.5 sm:py-3 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/50 transition-all group shadow-sm min-w-0 overflow-hidden"
             >
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0 group-hover:bg-indigo-200 transition-colors">
                 <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600" />

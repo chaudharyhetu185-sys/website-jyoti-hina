@@ -124,7 +124,8 @@ export default function App() {
     <div
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative w-screen h-screen overflow-hidden bg-[#f8fafc] text-slate-900 select-none"
+      className="relative w-full max-w-[100vw] overflow-hidden bg-[#f8fafc] text-slate-900 select-none"
+      style={{ height: '100dvh' }}
     >
       {/* Top Horizontal Navigation Bar */}
       <TopNavbar
@@ -133,9 +134,9 @@ export default function App() {
       />
 
       {/* Main Full-Screen Slide Container */}
-      <main className="h-screen w-full relative overflow-hidden">
+      <main className="w-full relative overflow-hidden" style={{ height: '100dvh' }}>
         {/* Lower Right Corner Next Section Button */}
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-30 flex items-center gap-2">
+        <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-30 flex items-center gap-1.5 sm:gap-2">
           {activeSection > 1 && (
             <button
               onClick={handlePrev}
@@ -178,7 +179,8 @@ export default function App() {
               x: { type: 'spring', stiffness: 280, damping: 30 },
               opacity: { duration: 0.25 },
             }}
-            className="w-full h-[calc(100vh-4rem)] absolute inset-x-0 bottom-0 top-16 overflow-y-auto overflow-x-hidden"
+            className="w-full absolute inset-x-0 bottom-0 top-16 overflow-y-auto overflow-x-hidden"
+            style={{ height: 'calc(100dvh - 4rem)' }}
           >
             {renderSlideContent()}
           </motion.div>

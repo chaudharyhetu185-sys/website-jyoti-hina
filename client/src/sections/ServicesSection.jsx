@@ -55,7 +55,7 @@ export const ServicesSection = ({ onNavigate }) => {
 
           <motion.h2
             variants={itemVariants}
-            className="text-2.5xl sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
+            className="text-[1.6rem] leading-[1.25] sm:text-4xl md:text-5xl font-extrabold font-display text-slate-900 tracking-tight"
           >
             Our <span className="text-indigo-600">Services</span>
           </motion.h2>
